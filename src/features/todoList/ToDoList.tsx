@@ -1,31 +1,58 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { todoListApi } from "../../shared/api/api";
-import { useState } from "react";
+import { useIntersection } from "../../shared/useIntersection";
 
 export function ToDoList() {
-  const [page, setPage] = useState(1);
+  // Code for pagination
+  //const [page, setPage] = useState(1);
+  //   const {
+  //     data: todoData,
+  //     error,
+  //     isLoading,
+  //     isPlaceholderData,
+  //   } = useQuery({
+  //     queryKey: ["todos", page],
+  //     queryFn: (meta) => {
+  //       const { signal } = meta;
+  //       return todoListApi.getTodos({ page, signal });
+  //     },
+  //     placeholderData: keepPreviousData,
+  //   });
 
+  // Code for infinite Query
   const {
     data: todoData,
     error,
-    isPending,
-  } = useQuery({
-    queryKey: ["todos", page],
+    isLoading,
+    isPlaceholderData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["todos"],
     queryFn: (meta) => {
-      const { signal } = meta;
-      return todoListApi.getTodos({ page, signal });
+      const { signal, pageParam } = meta;
+      return todoListApi.getTodos({ page: pageParam, signal });
     },
+    initialPageParam: 1,
+    getNextPageParam: (result) => result.next,
+    select: (result) => result.pages.flatMap((page) => page.data),
   });
 
-  const handlePrev = () => {
-    setPage((prev) => Math.max(prev - 1, 1));
-  };
+  const cursorRef = useIntersection(() => {
+    fetchNextPage();
+  });
 
-  const handleNext = () => {
-    setPage((prev) => Math.min(prev + 1, todoData?.pages || 1));
-  };
+  // Code for pagination
+  //   const handlePrev = () => {
+  //     setPage((prev) => Math.max(prev - 1, 1));
+  //   };
 
-  if (isPending) {
+  //   const handleNext = () => {
+  //     setPage((prev) => Math.min(prev + 1, todoData?.pages || 1));
+  //   };
+
+  if (isLoading) {
     return <div className="text-gray-500">Loading...</div>;
   }
 
@@ -36,15 +63,31 @@ export function ToDoList() {
   return (
     <main className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-5">ToDo List</h1>
-      <div className="flex flex-col gap-4">
-        {todoData.data.map((todo) => (
+
+      <div
+        className={
+          "flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")
+        }
+      >
+        {todoData?.map((todo) => (
           <div key={todo.id} className="border border-gray-200 rounded p-2">
             {todo.title}
           </div>
         ))}
       </div>
+      <div className="text-center" ref={cursorRef}>
+        {!hasNextPage && (
+          <span className="text-gray-500">
+            You have reached the end of the list
+          </span>
+        )}
+        {isFetchingNextPage && (
+          <span className="text-gray-500">Loading...</span>
+        )}
+      </div>
 
-      <div className="flex justify-between mt-4 items-center">
+      {/* Pagination Controls */}
+      {/* <div className="flex justify-between mt-4 items-center">
         <button
           onClick={handlePrev}
           className="border border-gray-300 rounded px-4 py-2 cursor-pointer disabled:opacity-50"
@@ -52,9 +95,11 @@ export function ToDoList() {
         >
           Previous
         </button>
+
         <span className="text-gray-600">
           Page {page} of {todoData?.pages}
         </span>
+
         <button
           onClick={handleNext}
           className="border border-gray-300 rounded px-4 py-2 cursor-pointer disabled:opacity-50"
@@ -62,7 +107,7 @@ export function ToDoList() {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </main>
   );
 }
