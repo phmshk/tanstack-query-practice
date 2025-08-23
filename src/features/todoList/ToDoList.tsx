@@ -10,14 +10,7 @@ export function ToDoList() {
   //     error,
   //     isLoading,
   //     isPlaceholderData,
-  //   } = useQuery({
-  //     queryKey: ["todos", page],
-  //     queryFn: (meta) => {
-  //       const { signal } = meta;
-  //       return todoListApi.getTodos({ page, signal });
-  //     },
-  //     placeholderData: keepPreviousData,
-  //   });
+  //   } = useQuery(todoListApi.getTodosQueryOptions({ page }));
 
   // Code for infinite Query
   const {
@@ -28,16 +21,7 @@ export function ToDoList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["todos"],
-    queryFn: (meta) => {
-      const { signal, pageParam } = meta;
-      return todoListApi.getTodos({ page: pageParam, signal });
-    },
-    initialPageParam: 1,
-    getNextPageParam: (result) => result.next,
-    select: (result) => result.pages.flatMap((page) => page.data),
-  });
+  } = useInfiniteQuery(todoListApi.getTodosInfiniteQueryOptions());
 
   const cursorRef = useIntersection(() => {
     fetchNextPage();
