@@ -7,8 +7,8 @@ export function useCreateTodo() {
 
   const createTodoMutation = useMutation({
     mutationFn: todoListApi.createTodo,
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [todoListApi.baseKey] });
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: [todoListApi.baseKey] });
     },
   });
 
@@ -27,5 +27,5 @@ export function useCreateTodo() {
     e.currentTarget.reset();
   };
 
-  return { handleCreate };
+  return { handleCreate, isPending: createTodoMutation.isPending };
 }
