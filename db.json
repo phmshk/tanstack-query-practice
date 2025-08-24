@@ -744,18 +744,6 @@
       "title": "Test export feature",
       "completed": true,
       "userId": "u6"
-    },
-    {
-      "id": "119",
-      "title": "Setup scheduled tasks",
-      "completed": false,
-      "userId": "u4"
-    },
-    {
-      "id": "120",
-      "title": "Review app logs",
-      "completed": true,
-      "userId": "u2"
     }
   ]
 }

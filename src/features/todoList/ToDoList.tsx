@@ -56,7 +56,7 @@ export function ToDoList() {
             <button
               onClick={() => deleteTodo.handleDelete(todo.id)}
               className=" text-red-500 ml-2 cursor-pointer disabled:text-red-100"
-              disabled={deleteTodo.isPending}
+              disabled={deleteTodo.getIsPending(todo.id)}
             >
               Delete
             </button>
