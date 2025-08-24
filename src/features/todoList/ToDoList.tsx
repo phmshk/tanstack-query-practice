@@ -1,6 +1,7 @@
 import { useAllTodoItems } from "../../shared/hooks/useAllTodoItems";
 import { useCreateTodo } from "../../shared/hooks/useCreateTodo";
 import { useDeleteTodo } from "../../shared/hooks/useDeleteTodo";
+import { useToggleTodo } from "../../shared/hooks/useToggleTodo";
 
 export function ToDoList() {
   // const [page, setPage] = useState(1);
@@ -9,6 +10,7 @@ export function ToDoList() {
 
   const createTodo = useCreateTodo();
   const deleteTodo = useDeleteTodo();
+  const toggleTodo = useToggleTodo();
 
   if (isLoading) {
     return <div className="text-gray-500">Loading...</div>;
@@ -52,6 +54,12 @@ export function ToDoList() {
             key={todo.id}
             className="border border-gray-200 rounded p-2 flex justify-between items-center"
           >
+            <input
+              className="mr-2"
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo.toggleTodo(todo)}
+            />
             {todo.title}
             <button
               onClick={() => deleteTodo.handleDelete(todo.id)}

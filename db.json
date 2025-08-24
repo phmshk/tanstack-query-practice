@@ -39,9 +39,7 @@
   "todos": [
     {
       "id": "1",
-      "title": "Buy groceries",
-      "completed": false,
-      "userId": "u3"
+      "completed": true
     },
     {
       "id": "2",
@@ -51,9 +49,7 @@
     },
     {
       "id": "3",
-      "title": "Finish React project",
-      "completed": true,
-      "userId": "u7"
+      "completed": false
     },
     {
       "id": "4",
@@ -448,7 +444,7 @@
     {
       "id": "69",
       "title": "Update contact page",
-      "completed": false,
+      "completed": true,
       "userId": "u6"
     },
     {
@@ -460,7 +456,7 @@
     {
       "id": "71",
       "title": "Setup feature flags",
-      "completed": false,
+      "completed": true,
       "userId": "u2"
     },
     {
@@ -726,24 +722,6 @@
       "title": "Setup custom reports",
       "completed": false,
       "userId": "u7"
-    },
-    {
-      "id": "116",
-      "title": "Review user retention",
-      "completed": true,
-      "userId": "u3"
-    },
-    {
-      "id": "117",
-      "title": "Update app version",
-      "completed": false,
-      "userId": "u5"
-    },
-    {
-      "id": "118",
-      "title": "Test export feature",
-      "completed": true,
-      "userId": "u6"
     }
   ]
 }
